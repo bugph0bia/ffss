@@ -15,3 +15,11 @@ e.g.) EPUB file to image files.
 5. Input bottom-right of the screenshot area (from mouse cursor position).
 6. Input Screenshot interval seconds.
 7. Do not touch your PC, until completed...
+
+# Setting
+WIP
+
+# TODO
+- [ ] auto trim size
+- [x] auto end decision
+- [ ] split page vertical
