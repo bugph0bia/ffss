@@ -18,7 +18,7 @@ def main():
 
     # load stting
     st = load_setting()
-    st = input_setting(st)
+    st = fill_setting(st)
 
     # run screenshot
     screenshot(st)
@@ -32,109 +32,165 @@ def load_setting():
     return st
 
 
-def input_setting(st):
-    """Load setting from user input."""
+def fill_setting(st):
+    """Fill setting from user input or default."""
 
-    if 'page_num' not in st:
-        t = intput_with_default('Number of pages, or "auto": ', 'auto')
-        if not t:
-            t = 'auto'
-        st['page_num'] = t
+    key = 'page_num'
+    if key not in st:
+        print(f'\n[{key}]')
+        itext = intput_with_default('Number of pages, or "auto" > ', 'auto')
+        if not itext:
+            itext = 'auto'
+        if itext != 'auto':
+            itext = int(itext)
+        st[key] = itext
 
-    if 'page_derection' not in st:
-        st['page_derection'] = intput_with_default('Page direction [l|r]: ', 'r')
+    key = 'page_derection'
+    if key not in st:
+        print(f'\n[{key}]')
+        itext = intput_with_default('Page direction [l|r] > ', 'r')
+        match itext.lower():
+            case 'r' | 'right':
+                itext = 'right'
+            case 'l' | 'left':
+                itext = 'left'
+        st[key] = itext
 
-    if 'wait_before_start_ms' not in st:
-        st['wait_before_start_ms'] = intput_with_default('Wait before start [ms]: ', '5000')
+    key = 'wait_before_start_ms'
+    if key not in st:
+        print(f'\n[{key}]')
+        st[key] = int(intput_with_default('Wait before start [ms] > ', '5000'))
 
-    if 'interval_ms' not in st:
-        st['interval_ms'] = intput_with_default('Interval [ms]: ', '1000')
+    key = 'interval_ms'
+    if key not in st:
+        print(f'\n[{key}]')
+        st[key] = int(intput_with_default('Interval [ms] > ', '1000'))
 
-    if 'output_dir_prefix' not in st:
-        st['output_dir_prefix'] = intput_with_default('Output directory prefix: ', 'output_')
+    key = 'output_dir_prefix'
+    if key not in st:
+        print(f'\n[{key}]')
+        st[key] = intput_with_default('Output directory prefix > ', 'output_')
 
-    if 'fname_prefix' not in st:
-        st['fname_prefix'] = intput_with_default('File name prefix: ', 'page_')
+    key = 'fname_prefix'
+    if key not in st:
+        print(f'\n[{key}]')
+        st[key] = intput_with_default('File name prefix > ', 'page_')
 
-    if 'trim_mode' not in st:
-        st['trim_mode'] = 'manual'
+    key = 'ss_left'
+    if key not in st:
+        print(f'\n[{key}]')
+        print('Press enter key after move the mouse cursor left of the screenshot area.')
+        print('Alternatively, enter "max" to use the maximum size of the display.')
+        itext = input('> ')
+        if itext.lower() == 'max':
+            st[key] = 0
+        else:
+            st[key] = pyautogui.position()[0]
 
-    if 'trim_top_left' not in st:
-        print('Press enter key, after move the mouse cursor top-left of the screenshot area...')
-        input()
-        x, y = pyautogui.position()
-        st['trim_top_left'] = f'{x},{y}'
+    key = 'ss_right'
+    if key not in st:
+        print(f'\n[{key}]')
+        print('Press enter key after move the mouse cursor right of the screenshot area.')
+        print('Alternatively, enter "max" to use the maximum size of the display.')
+        itext = input('> ')
+        if itext.lower() == 'max':
+            st[key] = pyautogui.size()[0]
+        else:
+            st[key] = pyautogui.position()[0]
 
-    if 'trim_bottom_right' not in st:
-        print('Press enter key, after move the mouse cursor bottom-right of the screenshot area...')
-        input()
-        x, y = pyautogui.position()
-        st['trim_bottom_right'] = f'{x},{y}'
+    key = 'ss_top'
+    if key not in st:
+        print(f'\n[{key}]')
+        print('Press enter key after move the mouse cursor top of the screenshot area.')
+        print('Alternatively, enter "max" to use the maximum size of the display.')
+        itext = input('> ')
+        if itext.lower() == 'max':
+            st[key] = 0
+        else:
+            st[key] = pyautogui.position()[1]
+
+    key = 'ss_bottom'
+    if key not in st:
+        print(f'\n[{key}]')
+        print('Press enter key after move the mouse cursor bottom of the screenshot area.')
+        print('Alternatively, enter "max" to use the maximum size of the display.')
+        itext = input('> ')
+        if itext.lower() == 'max':
+            st[key] = pyautogui.size()[1]
+        else:
+            st[key] = pyautogui.position()[1]
+
+    key = 'trim'
+    if key not in st:
+        print(f'\n[{key}]')
+        itext = intput_with_default('Trim posotion [none|fit|fit-onetime]: ', 'none')
+        match itext.lower():
+            case 'fit':
+                itext = 'fit'
+            case 'fit-onetime':
+                itext = 'fit-onetime'
+            case _:
+                itext = 'none'
+        st[key] = itext
 
     return st
+
+
+def intput_with_default(prompt, default):
+    """input() with default value"""
+
+    itext = input(prompt)
+    if not itext:
+        itext = default
+    return itext
 
 
 def screenshot(st):
     """run screenshot"""
 
-    # get settings or set default
-    interval = int(st['interval_ms']) / 1000
-    wait_before_start = int(st['wait_before_start_ms']) / 1000
+    # preparation
+    interval = st['interval_ms'] / 1000
+    wait_before_start = st['wait_before_start_ms'] / 1000
     output_dir = st['output_dir_prefix'] + str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
     fname_prefix = st['fname_prefix']
     page_num = st['page_num']
-    if page_num != 'auto':
-        page_num = int(page_num)
     page_derection = st['page_derection']
-    match page_derection.lower():
-        case 'r' | 'right':
-            page_derection = 'right'
-        case 'l' | 'left':
-            page_derection = 'left'
-    trim_mode = st['trim_mode']
-    match trim_mode.lower():
-        case 'auto':
-            trim_mode = 'auto'
-        case 'auto-onetime':
-            trim_mode = 'auto-onetime'
-        case _:
-            trim_mode = 'manual'
-    trim_top_left = st['trim_top_left']
-    x1 = int(trim_top_left.split(',')[0])
-    y1 = int(trim_top_left.split(',')[1])
-    trim_bottom_right = st['trim_bottom_right']
-    x2 = int(trim_bottom_right.split(',')[0])
-    y2 = int(trim_bottom_right.split(',')[1])
+    x1 = st['ss_left']
+    x2 = st['ss_right']
+    y1 = st['ss_top']
+    y2 = st['ss_bottom']
+    trim = st['trim']
 
-    # Waiting before starting
+    # waiting before starting
     print(f'Start after {wait_before_start} seconds, During which time the target window should be brought to the forefront...')
     time.sleep(wait_before_start)
 
     # make output directory
     os.mkdir(output_dir)
 
-    region = None
+    trim_area = None
     ss_old = None
-    p = 0
+    page = 0
+
     while True:
         # make file path
-        fname = fname_prefix + str(p + 1).zfill(4) + '.png'
+        fname = fname_prefix + str(page + 1).zfill(4) + '.png'
         fpath = os.path.join(output_dir, fname)
 
-        # region = (x1, y1, x2 - x1, y2 - y1)
-        # ss = pyautogui.screenshot(region=region)
-        ss = pyautogui.screenshot()
+        # screenshot
+        region = (x1, y1, x2 - x1, y2 - y1)
+        ss = pyautogui.screenshot(region=region)
+
+        # trim_area is determined by setting of 'trim':
+        #   - 'none': No trimming.
+        #   - 'fit': Everytime, automatically determined.
+        #   - 'fit-onetime': First time (Front cover) only, automatically determined.
+        if trim == 'fit' or (trim == 'fit-onetime' and page == 0):
+            trim_area = fit_trim_area(ss)
 
         # triming
-        # region is determined by trim_mode:
-        #   - 'auto': Everytime, automatically determined.
-        #   - 'auto-onetime': First time (Front cover) only, automatically determined.
-        #   - 'manual': Determined by setting value.
-        if trim_mode == 'auto' or (trim_mode == 'auto-onetime' and p == 0):
-            region = get_trim_region(ss)
-        elif trim_mode == 'manual':
-            region = (x1, y1, x2, y2)
-        ss = ss.crop(region)
+        if trim != 'none':
+            ss = ss.crop(trim_area)
 
         # (auto mode) same pages consecutive ?
         if page_num == 'auto':
@@ -147,7 +203,7 @@ def screenshot(st):
 
         # reach the last page ?
         if isinstance(page_num, int):
-            if p >= page_num:
+            if page >= page_num:
                 break
 
         # form feed
@@ -156,28 +212,19 @@ def screenshot(st):
 
         # next
         ss_old = ss
-        p += 1
+        page += 1
 
 
-def intput_with_default(prompt, default):
-    """input() with default value"""
-
-    itext = input(prompt)
-    if not itext:
-        itext = default
-    return itext
-
-
-def get_trim_region(org_img):
-    """get trim region automaticaly"""
+def fit_trim_area(org_img):
+    """Automatically fit to determine trim area"""
 
     # create background image from RGB of (0, 0) pixel
     bg_img = Image.new('RGB', org_img.size, org_img.getpixel((0, 0)))
 
     # get trim region
     diff = ImageChops.difference(org_img, bg_img)
-    region = diff.convert("RGB").getbbox()
-    return region
+    area = diff.convert('RGB').getbbox()
+    return area
 
 
 if __name__ == '__main__':

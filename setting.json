@@ -3,7 +3,9 @@
     "interval_ms": 750,
     "output_dir_prefix": "output_",
     "fname_prefix": "page_",
-    "trim_mode": "manual",
-    "trim_top_left": "580, 0",
-    "trim_bottom_right": "1340, 1080"
+    "@ss_left": 580,
+    "@ss_right": 1340,
+    "@ss_top": 0,
+    "@ss_bottom": 1080,
+    "@trim": "none"
 }
