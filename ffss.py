@@ -4,17 +4,17 @@ import datetime
 import json
 
 import pyautogui
+import win32gui
+import ctypes
 from PIL import Image, ImageChops
 
 
-
-USAGE = """================ ffss: form feed and screenshot ================
-"""
+VERSION = 'v0.0.1'
 
 
 def main():
     """main"""
-    print(USAGE)
+    print(f'================ ffss: form feed and screenshot ({VERSION}) ================')
 
     # load stting
     st = load_setting()
@@ -38,100 +38,125 @@ def fill_setting(st):
     key = 'page_num'
     if key not in st:
         print(f'\n[{key}]')
-        itext = intput_with_default('Number of pages, or "auto" > ', 'auto')
+        print('Number of pages, or "auto".\nDefault: auto')
+        itext = intput_with_default('> ', 'auto')
         if not itext:
             itext = 'auto'
         if itext != 'auto':
             itext = int(itext)
         st[key] = itext
+        print(f'{key} = {st[key]}')
 
-    key = 'page_derection'
+    key = 'page_direction'
     if key not in st:
         print(f'\n[{key}]')
-        itext = intput_with_default('Page direction [l|r] > ', 'r')
+        print('Page direction [right(r)|left(l)].\nDefault: right')
+        itext = intput_with_default('> ', 'r')
         match itext.lower():
             case 'r' | 'right':
                 itext = 'right'
             case 'l' | 'left':
                 itext = 'left'
         st[key] = itext
+        print(f'{key} = {st[key]}')
 
     key = 'wait_before_start_ms'
     if key not in st:
         print(f'\n[{key}]')
-        st[key] = int(intput_with_default('Wait before start [ms] > ', '5000'))
+        print('Wait before start [ms].\nDefault: 5000')
+        st[key] = int(intput_with_default('> ', '5000'))
+        print(f'{key} = {st[key]}')
 
     key = 'interval_ms'
     if key not in st:
         print(f'\n[{key}]')
-        st[key] = int(intput_with_default('Interval [ms] > ', '1000'))
+        print('Interval [ms].\nDefault: 1000')
+        st[key] = int(intput_with_default('> ', '1000'))
+        print(f'{key} = {st[key]}')
 
     key = 'output_dir_prefix'
     if key not in st:
         print(f'\n[{key}]')
-        st[key] = intput_with_default('Output directory prefix > ', 'output_')
+        print('Output directory prefix.\nDefault: output_')
+        st[key] = intput_with_default('> ', 'output_')
+        print(f'{key} = {st[key]}')
 
     key = 'fname_prefix'
     if key not in st:
         print(f'\n[{key}]')
-        st[key] = intput_with_default('File name prefix > ', 'page_')
+        print('File name prefix.\nDefault: page_')
+        st[key] = intput_with_default(' > ', 'page_')
+        print(f'{key} = {st[key]}')
 
     key = 'ss_left'
     if key not in st:
         print(f'\n[{key}]')
-        print('Press enter key after move the mouse cursor left of the screenshot area.')
+        print('Press enter key after move the mouse cursor LEFT of the screenshot area.')
         print('Alternatively, enter "max" to use the maximum size of the display.')
         itext = input('> ')
         if itext.lower() == 'max':
             st[key] = 0
         else:
             st[key] = pyautogui.position()[0]
+        print(f'{key} = {st[key]}')
 
     key = 'ss_right'
     if key not in st:
         print(f'\n[{key}]')
-        print('Press enter key after move the mouse cursor right of the screenshot area.')
+        print('Press enter key after move the mouse cursor RIGHT of the screenshot area.')
         print('Alternatively, enter "max" to use the maximum size of the display.')
         itext = input('> ')
         if itext.lower() == 'max':
             st[key] = pyautogui.size()[0]
         else:
             st[key] = pyautogui.position()[0]
+        print(f'{key} = {st[key]}')
 
     key = 'ss_top'
     if key not in st:
         print(f'\n[{key}]')
-        print('Press enter key after move the mouse cursor top of the screenshot area.')
+        print('Press enter key after move the mouse cursor TOP of the screenshot area.')
         print('Alternatively, enter "max" to use the maximum size of the display.')
         itext = input('> ')
         if itext.lower() == 'max':
             st[key] = 0
         else:
             st[key] = pyautogui.position()[1]
+        print(f'{key} = {st[key]}')
 
     key = 'ss_bottom'
     if key not in st:
         print(f'\n[{key}]')
-        print('Press enter key after move the mouse cursor bottom of the screenshot area.')
+        print('Press enter key after move the mouse cursor BOTTOM of the screenshot area.')
         print('Alternatively, enter "max" to use the maximum size of the display.')
         itext = input('> ')
         if itext.lower() == 'max':
             st[key] = pyautogui.size()[1]
         else:
             st[key] = pyautogui.position()[1]
+        print(f'{key} = {st[key]}')
 
     key = 'trim'
     if key not in st:
         print(f'\n[{key}]')
-        itext = intput_with_default('Trim posotion [none|fit|fit-onetime]: ', 'none')
+        print('Trim position [none(n)|fit(f)|fit-onetime(o)].\nDefault: none')
+        itext = intput_with_default('> ', 'none')
         match itext.lower():
-            case 'fit':
+            case 'f' | 'fit':
                 itext = 'fit'
-            case 'fit-onetime':
+            case 'o' | 'fit-onetime':
                 itext = 'fit-onetime'
             case _:
                 itext = 'none'
         st[key] = itext
+        print(f'{key} = {st[key]}')
+
+    key = 'target_window'
+    if key not in st:
+        print(f'\n[{key}]')
+        print('Target window title (allow substring).')
+        st[key] = intput_with_default('> ', None)
+        print(f'{key} = {st[key]}')
 
     return st
 
@@ -154,15 +179,20 @@ def screenshot(st):
     output_dir = st['output_dir_prefix'] + str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
     fname_prefix = st['fname_prefix']
     page_num = st['page_num']
-    page_derection = st['page_derection']
+    page_direction = st['page_direction']
     x1 = st['ss_left']
     x2 = st['ss_right']
     y1 = st['ss_top']
     y2 = st['ss_bottom']
     trim = st['trim']
+    target_window = st['target_window']
+
+    # foreground target window
+    if target_window:
+        foreground_window(target_window)
 
     # waiting before starting
-    print(f'Start after {wait_before_start} seconds, During which time the target window should be brought to the forefront...')
+    print(f'Start after {wait_before_start} seconds, during which time the target window should be brought to the forefront...')
     time.sleep(wait_before_start)
 
     # make output directory
@@ -207,7 +237,7 @@ def screenshot(st):
                 break
 
         # form feed
-        pyautogui.keyDown(page_derection)
+        pyautogui.keyDown(page_direction)
         time.sleep(interval)
 
         # next
@@ -225,6 +255,36 @@ def fit_trim_area(org_img):
     diff = ImageChops.difference(org_img, bg_img)
     area = diff.convert('RGB').getbbox()
     return area
+
+
+def foreground_window(title):
+    """Foreground the window with the specified title."""
+
+    def fg(hwnd, lparam):
+        """Callback by EnumWindows()"""
+
+        caption = win32gui.GetWindowText(hwnd)
+        left, top, right, bottom = win32gui.GetWindowRect(hwnd)
+
+        if caption.find(lparam) >= 0:
+            if win32gui.IsIconic(hwnd):
+                SW_SHOWNORMAL = 1
+                win32gui.ShowWindow(hwnd, SW_SHOWNORMAL)
+
+            # foreground
+            ctypes.windll.user32.SetForegroundWindow(hwnd)
+            # activate
+            pyautogui.moveTo(left + 5, top + 5)
+            pyautogui.click()
+            return False  # exit EnumWindows()
+
+        return True  # continue EnumWindows()
+
+    try:
+        win32gui.EnumWindows(fg, title)
+    except win32gui.error as e:
+        # read off exceptions when enumeration is stopped (fg() returns False).
+        pass
 
 
 if __name__ == '__main__':

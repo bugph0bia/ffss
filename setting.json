@@ -3,9 +3,5 @@
     "interval_ms": 750,
     "output_dir_prefix": "output_",
     "fname_prefix": "page_",
-    "@ss_left": 580,
-    "@ss_right": 1340,
-    "@ss_top": 0,
-    "@ss_bottom": 1080,
-    "@trim": "none"
+    "trim": "fit-onetime"
 }
