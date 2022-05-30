@@ -9,7 +9,7 @@ import ctypes
 from PIL import Image, ImageChops
 
 
-VERSION = 'v0.0.1'
+VERSION = 'v0.1.0'
 
 
 def main():

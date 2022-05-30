@@ -1,7 +1,7 @@
 ssff
 ====
 
-![Software Version](http://img.shields.io/badge/Version-v0.0.1-green.svg?style=flat)
+![Software Version](http://img.shields.io/badge/Version-v0.1.0-green.svg?style=flat)
 ![Python Version](http://img.shields.io/badge/Python-3.10-blue.svg?style=flat)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
