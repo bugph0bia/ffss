@@ -14,7 +14,7 @@ VERSION = 'v0.0.1'
 
 def main():
     """main"""
-    print(f'================ ffss: form feed and screenshot ({VERSION}) ================')
+    print(f'================ ssff: Screenshot and form feed ({VERSION}) ================')
 
     # load stting
     st = load_setting()

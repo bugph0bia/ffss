@@ -1,3 +1,3 @@
 call .venv\Scripts\Activate
-python ffss.py
+python ssff.py
 pause

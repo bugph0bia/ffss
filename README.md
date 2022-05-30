@@ -1,4 +1,4 @@
-ffss
+ssff
 ====
 
 ![Software Version](http://img.shields.io/badge/Version-v0.0.1-green.svg?style=flat)
@@ -6,7 +6,7 @@ ffss
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
 ## Overview
-form feed and screenshot. For Windows OS.  
+Screenshot and form feed. For Windows OS only.  
 e.g.) PDF, EPUB file to image files.
 
 ## Requirements
@@ -17,7 +17,7 @@ e.g.) PDF, EPUB file to image files.
 
 ## Usage
 1. Prepare `setting.json`.
-2. Run `ffss.exe` or `python3 ffss.py`.
+2. Run `ssff.exe` or `python3 ssff.py`.
 3. Input missing settings on console.
 4. Do not touch your PC, until completed...
 
