@@ -3,5 +3,6 @@
     "interval_ms": 750,
     "output_dir_prefix": "output_",
     "fname_prefix": "page_",
-    "trim": "fit-onetime"
+    "trim": "fit-onetime",
+    "vsplit": "no"
 }
