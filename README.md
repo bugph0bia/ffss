@@ -1,7 +1,7 @@
 ssff
 ====
 
-![Software Version](http://img.shields.io/badge/Version-v0.1.0-green.svg?style=flat)
+![Software Version](http://img.shields.io/badge/Version-v0.2.0-green.svg?style=flat)
 ![Python Version](http://img.shields.io/badge/Python-3.10-blue.svg?style=flat)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
@@ -46,7 +46,7 @@ Sample:
 Number of pages, or "auto". (Integer or String)  
 
 It is a condition of program termination.  
-If set to "auto", the program will automatically terminate if the same page is found.
+If set to "auto", the program will automatically terminate when the same page is found.
 
 ## `page_direction`
 Page direction. (String)  
@@ -72,7 +72,8 @@ Image files are named with a prefix + sequential number.
 ## `ss_left`, `ss_right`, `ss_top`, `ss_bottom`
 Position of screenshot area, or "max". (Integer or String)  
 
-If set to "max", each end of the display size is used.
+Enter left, right, top, bottom, in that order.  
+If set to "max", each end of the display size is used.  
 
 ![](./README/ss_left.png)
 ![](./README/ss_right.png)
@@ -94,6 +95,11 @@ Automatically removes marginal areas (areas of the same continuous color) in scr
 ### If set to "fit-onetime" or "o".
 Automatically removes marginal areas (areas of the same continuous color) in screenshot images. The trim size calculated for the first page (front cover) is used for all pages.  
 
+## `vsplit`
+Split image vertical, if width > height. (String)  
+
+Set "yes" or "no".  
+
 ## `target_window`
 Target window title. (String)  
 
@@ -103,5 +109,5 @@ Allow substring.
 ## TODO
 - [x] Auto fit trim size.
 - [x] Auto end decision.
-- [ ] Split page vertical.
-- [ ] To executable file. (Use PyInstaller)
+- [x] Split page vertical.
+- [x] To executable file. (Use PyInstaller)
