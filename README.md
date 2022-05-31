@@ -1,7 +1,7 @@
 ssff
 ====
 
-![Software Version](http://img.shields.io/badge/Version-v0.1.0-green.svg?style=flat)
+![Software Version](http://img.shields.io/badge/Version-v0.2.0-green.svg?style=flat)
 ![Python Version](http://img.shields.io/badge/Python-3.10-blue.svg?style=flat)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
@@ -94,6 +94,9 @@ Automatically removes marginal areas (areas of the same continuous color) in scr
 ### If set to "fit-onetime" or "o".
 Automatically removes marginal areas (areas of the same continuous color) in screenshot images. The trim size calculated for the first page (front cover) is used for all pages.  
 
+## `vsplit`
+Split image vertical, if width > height. (Bool)
+
 ## `target_window`
 Target window title. (String)  
 
@@ -103,5 +106,5 @@ Allow substring.
 ## TODO
 - [x] Auto fit trim size.
 - [x] Auto end decision.
-- [ ] Split page vertical.
-- [ ] To executable file. (Use PyInstaller)
+- [x] Split page vertical.
+- [x] To executable file. (Use PyInstaller)
