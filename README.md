@@ -95,7 +95,9 @@ Automatically removes marginal areas (areas of the same continuous color) in scr
 Automatically removes marginal areas (areas of the same continuous color) in screenshot images. The trim size calculated for the first page (front cover) is used for all pages.  
 
 ## `vsplit`
-Split image vertical, if width > height. (Bool)
+Split image vertical, if width > height. (String)  
+
+Set "yes" or "no".  
 
 ## `target_window`
 Target window title. (String)  
