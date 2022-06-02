@@ -9,7 +9,7 @@ import ctypes
 from PIL import Image, ImageChops
 
 
-VERSION = 'v0.1.0'
+VERSION = 'v0.2.0'
 
 
 def main():
@@ -151,6 +151,20 @@ def fill_setting(st):
         st[key] = itext
         print(f'{key} = {st[key]}')
 
+    key = 'vsplit'
+    if key not in st:
+        print(f'\n[{key}]')
+        print('Split image vertical, if width > height [yes(y)|no(n)].\nDefault: no')
+        itext = intput_with_default('> ', None)
+        match itext.lower():
+            case 'y' | 'yes':
+                itext = 'yes'
+            case _:
+                itext = 'no'
+        st[key] = itext
+        print(f'{key} = {st[key]}')
+
+
     key = 'target_window'
     if key not in st:
         print(f'\n[{key}]')
@@ -185,6 +199,7 @@ def screenshot(st):
     y1 = st['ss_top']
     y2 = st['ss_bottom']
     trim = st['trim']
+    vsplit = (st['vsplit'] == 'yes')
     target_window = st['target_window']
 
     # foreground target window
@@ -201,12 +216,9 @@ def screenshot(st):
     trim_area = None
     ss_old = None
     page = 0
+    fno = 1
 
     while True:
-        # make file path
-        fname = fname_prefix + str(page + 1).zfill(4) + '.png'
-        fpath = os.path.join(output_dir, fname)
-
         # screenshot
         region = (x1, y1, x2 - x1, y2 - y1)
         ss = pyautogui.screenshot(region=region)
@@ -227,9 +239,19 @@ def screenshot(st):
             if ss_old == ss:
                 break
 
-        # save
-        ss.save(fpath)
-        print('save: {}'.format(fname))
+        if vsplit and ss.width > ss.height:
+            # vertical split
+            ssl = ss.crop((0, 0, ss.width//2, ss.height))
+            ssr = ss.crop((ss.width//2, 0, ss.width, ss.height))
+            # save
+            save_image(ssl, fname_prefix, fno)
+            save_image(ssr, fname_prefix, fno+1)
+            fno += 2
+
+        else:
+            # save
+            save_image(ss, fname_prefix, fno)
+            fno += 1
 
         # reach the last page ?
         if isinstance(page_num, int):
@@ -243,6 +265,16 @@ def screenshot(st):
         # next
         ss_old = ss
         page += 1
+
+
+def save_image(img, fname_prefix, fno):
+    """Save image."""
+    # make file path
+    fname = fname_prefix + str(fno + 1).zfill(4) + '.png'
+    fpath = os.path.join(output_dir, fname)
+    # save
+    img.save(fpath)
+    print('save: {}'.format(fname))
 
 
 def fit_trim_area(org_img):

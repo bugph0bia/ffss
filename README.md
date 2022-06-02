@@ -1,9 +1,11 @@
 ssff
 ====
 
-![Software Version](http://img.shields.io/badge/Version-v0.1.0-green.svg?style=flat)
+![Software Version](http://img.shields.io/badge/Version-v0.2.0-green.svg?style=flat)
 ![Python Version](http://img.shields.io/badge/Python-3.10-blue.svg?style=flat)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+
+[Japanese page](./README.ja.md)  
 
 ## Overview
 Screenshot and form feed. For Windows OS only.  
@@ -21,11 +23,11 @@ e.g.) PDF, EPUB file to image files.
 3. Input missing settings on console.
 4. Do not touch your PC, until completed...
 
-# Settings
-Setting values can be prepared in advance in a configuration file (`setting.json`).  
+# Options
+Option values can be prepared in advance in a configuration file (`setting.json`).  
 If value is not present in the configuration file, you will be prompted to enter it.  
 
-## setting.json
+## Configuration file
 To be placed in the current directory with the name `setting.json`.  
 File format is JSON, encoding is UTF-8.  
 
@@ -65,7 +67,7 @@ Output directory prefix. (String)
 Output directory is created in the current directory.  
 
 ## `fname_prefix`
-File name prefix. (String)
+Image file name prefix. (String)
 
 Image files are named with a prefix + sequential number.  
 
@@ -83,16 +85,21 @@ If set to "max", each end of the display size is used.
 ## `trim`
 Trim position. (String)  
 
-### If set to "none" or "n".
+### "none" or "n".
 No trimming.  
 
-### If set to "fit" or "f".
+### "fit" or "f".
 Automatically removes marginal areas (areas of the same continuous color) in screenshot images on all pages.
 
 ![](./README/fit.png)
 
-### If set to "fit-onetime" or "o".
+### "fit-onetime" or "o".
 Automatically removes marginal areas (areas of the same continuous color) in screenshot images. The trim size calculated for the first page (front cover) is used for all pages.  
+
+## `vsplit`
+Split image vertical, if width > height. (String)  
+
+Set "yes" or "no".  
 
 ## `target_window`
 Target window title. (String)  
@@ -103,5 +110,5 @@ Allow substring.
 ## TODO
 - [x] Auto fit trim size.
 - [x] Auto end decision.
-- [ ] Split page vertical.
-- [ ] To executable file. (Use PyInstaller)
+- [x] Split page vertical.
+- [x] To executable file. (Use PyInstaller)
