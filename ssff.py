@@ -244,13 +244,13 @@ def screenshot(st):
             ssl = ss.crop((0, 0, ss.width//2, ss.height))
             ssr = ss.crop((ss.width//2, 0, ss.width, ss.height))
             # save
-            save_image(ssl, fname_prefix, fno)
-            save_image(ssr, fname_prefix, fno+1)
+            save_image(ssl, output_dir, fname_prefix, fno)
+            save_image(ssr, output_dir, fname_prefix, fno+1)
             fno += 2
 
         else:
             # save
-            save_image(ss, fname_prefix, fno)
+            save_image(ss, output_dir, fname_prefix, fno)
             fno += 1
 
         # reach the last page ?
@@ -267,10 +267,10 @@ def screenshot(st):
         page += 1
 
 
-def save_image(img, fname_prefix, fno):
+def save_image(img, output_dir, fname_prefix, fno):
     """Save image."""
     # make file path
-    fname = fname_prefix + str(fno + 1).zfill(4) + '.png'
+    fname = fname_prefix + str(fno).zfill(4) + '.png'
     fpath = os.path.join(output_dir, fname)
     # save
     img.save(fpath)

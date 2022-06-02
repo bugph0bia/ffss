@@ -48,7 +48,7 @@ Sample:
 Number of pages, or "auto". (Integer or String)  
 
 It is a condition of program termination.  
-If set to "auto", the program will automatically terminate if the same page is found.
+If set to "auto", the program will automatically terminate when the same page is found.
 
 ## `page_direction`
 Page direction. (String)  
@@ -74,7 +74,8 @@ Image files are named with a prefix + sequential number.
 ## `ss_left`, `ss_right`, `ss_top`, `ss_bottom`
 Position of screenshot area, or "max". (Integer or String)  
 
-If set to "max", each end of the display size is used.
+Enter left, right, top, bottom, in that order.  
+If set to "max", each end of the display size is used.  
 
 ![](./README/ss_left.png)
 ![](./README/ss_right.png)
