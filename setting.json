@@ -9,6 +9,6 @@
     "ss_bottom": "max",
     "trim": "fit-onetime",
     "vsplit": "no",
-    "target_window": "Kindle",
+    "target_window": "Acrobat",
     "to_zip": "yes"
 }
