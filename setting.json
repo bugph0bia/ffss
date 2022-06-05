@@ -3,6 +3,12 @@
     "interval_ms": 750,
     "output_dir_prefix": "output_",
     "fname_prefix": "page_",
+    "ss_left": 400,
+    "ss_right": 1520,
+    "ss_top": "max",
+    "ss_bottom": "max",
     "trim": "fit-onetime",
-    "vsplit": "no"
+    "vsplit": "no",
+    "target_window": "Kindle",
+    "to_zip": "yes"
 }
