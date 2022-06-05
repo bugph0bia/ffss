@@ -215,7 +215,7 @@ def screenshot(st):
 
     trim_area = None
     ss_old = None
-    page = 0
+    page = 1
     fno = 1
 
     while True:
@@ -227,7 +227,7 @@ def screenshot(st):
         #   - 'none': No trimming.
         #   - 'fit': Everytime, automatically determined.
         #   - 'fit-onetime': First time (Front cover) only, automatically determined.
-        if trim == 'fit' or (trim == 'fit-onetime' and page == 0):
+        if trim == 'fit' or (trim == 'fit-onetime' and page == 1):
             trim_area = fit_trim_area(ss)
 
         # triming
