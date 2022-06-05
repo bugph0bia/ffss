@@ -1,7 +1,7 @@
 ssff
 ====
 
-![Software Version](http://img.shields.io/badge/Version-v0.2.0-green.svg?style=flat)
+![Software Version](http://img.shields.io/badge/Version-v0.3.0-green.svg?style=flat)
 ![Python Version](http://img.shields.io/badge/Python-3.10-blue.svg?style=flat)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
@@ -10,6 +10,13 @@ ssff
 ## Overview
 Screenshot and form feed. For Windows OS only.  
 e.g.) PDF, EPUB file to image files.
+
+### Main Features
+- Repeat screenshot and form feed.
+- (Optional) Auto fit triming size.
+- (Optional) Auto finish.
+- (Optional) Split page vertical.
+- (Optional) Zip compression.
 
 ## Requirements
 - Python3.10
@@ -117,10 +124,3 @@ Rename output directory after all processing. If not set, not rename.
 Zip compress output directory after all processing.  
 
 Set "yes" or "no".  
-
-## TODO
-- [x] Auto fit trim size.
-- [x] Auto end decision.
-- [x] Split page vertical.
-- [x] To executable file. (Use PyInstaller)
-- [x] Postscripts. (rename dir and zip compression)
