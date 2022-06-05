@@ -163,7 +163,7 @@ def fill_setting(st):
     print(f'\n[{key}]')
     if key not in st:
         print('Split image vertical, if width > height [yes(y)|no(n)].\nDefault: no')
-    itext = intput_with_default('> ', 'no')
+        st[key] = intput_with_default('> ', 'no')
     match st[key].lower():
         case 'y' | 'yes':
             st[key] = 'yes'
