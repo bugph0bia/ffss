@@ -2,6 +2,7 @@ import time
 import os
 import datetime
 import json
+import shutil
 
 import pyautogui
 import win32gui
@@ -9,7 +10,7 @@ import ctypes
 from PIL import Image, ImageChops
 
 
-VERSION = 'v0.2.0'
+VERSION = 'v0.3.0'
 
 
 def main():
@@ -22,6 +23,9 @@ def main():
 
     # run screenshot
     screenshot(st)
+
+    print('finished.')
+    input()
 
 
 def load_setting():
@@ -77,7 +81,7 @@ def fill_setting(st):
     key = 'output_dir_prefix'
     if key not in st:
         print(f'\n[{key}]')
-        print('Output directory prefix.\nDefault: output_')
+        print('Output temporary directory prefix.\nDefault: output_')
         st[key] = intput_with_default('> ', 'output_')
         print(f'{key} = {st[key]}')
 
@@ -155,7 +159,7 @@ def fill_setting(st):
     if key not in st:
         print(f'\n[{key}]')
         print('Split image vertical, if width > height [yes(y)|no(n)].\nDefault: no')
-        itext = intput_with_default('> ', None)
+        itext = intput_with_default('> ', 'no')
         match itext.lower():
             case 'y' | 'yes':
                 itext = 'yes'
@@ -164,12 +168,31 @@ def fill_setting(st):
         st[key] = itext
         print(f'{key} = {st[key]}')
 
-
     key = 'target_window'
     if key not in st:
         print(f'\n[{key}]')
         print('Target window title (allow substring).')
         st[key] = intput_with_default('> ', None)
+        print(f'{key} = {st[key]}')
+
+    key = 'dir_name'
+    if key not in st:
+        print(f'\n[{key}]')
+        print('Rename output directory after all processing. If not set, not rename.')
+        st[key] = intput_with_default('> ', None)
+        print(f'{key} = {st[key]}')
+
+    key = 'to_zip'
+    if key not in st:
+        print(f'\n[{key}]')
+        print('Zip compress output directory after all processing. [yes(y)|no(n)].\nDefault: no')
+        itext = intput_with_default('> ', 'no')
+        match itext.lower():
+            case 'y' | 'yes':
+                itext = 'yes'
+            case _:
+                itext = 'no'
+        st[key] = itext
         print(f'{key} = {st[key]}')
 
     return st
@@ -201,6 +224,8 @@ def screenshot(st):
     trim = st['trim']
     vsplit = (st['vsplit'] == 'yes')
     target_window = st['target_window']
+    dir_name = st['dir_name']
+    to_zip = (st['to_zip'] == 'yes')
 
     # foreground target window
     if target_window:
@@ -218,6 +243,7 @@ def screenshot(st):
     page = 1
     fno = 1
 
+    # main process
     while True:
         # screenshot
         region = (x1, y1, x2 - x1, y2 - y1)
@@ -265,6 +291,27 @@ def screenshot(st):
         # next
         ss_old = ss
         page += 1
+
+    # rename output dir
+    if dir_name:
+        try:
+            os.rename(output_dir, dir_name)
+            output_dir = dir_name
+            print(f'Rename output directory: {output_dir} -> {dir_name}')
+        except Exception:
+            print(f'Failed rename output directory: {output_dir} -> {dir_name}')
+
+    # zip compress output dir
+    if to_zip:
+        try:
+            # compressing
+            shutil.make_archive(output_dir, format='zip', root_dir=output_dir)
+            print('Zip compress output dir.')
+            # delete src directory
+            shutil.rmtree(output_dir)
+            print('Delete temporary directory.')
+        except Exception:
+            print('Failed zip compress or delete directory.')
 
 
 def save_image(img, output_dir, fname_prefix, fno):

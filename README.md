@@ -62,7 +62,7 @@ Wait before start (ms). (Integer)
 Interval (ms). (Integer)  
 
 ## `output_dir_prefix`
-Output directory prefix. (String)  
+Output temporary directory prefix. (String)  
 
 Output directory is created in the current directory.  
 
@@ -108,8 +108,19 @@ Target window title. (String)
 If input this value, window with the specified string caption are automatically foreground.  
 Allow substring.  
 
+## `dir_name`
+Output directory name. (String)  
+
+Rename output directory after all processing. If not set, not rename.  
+
+## `to_zip`
+Zip compress output directory after all processing.  
+
+Set "yes" or "no".  
+
 ## TODO
 - [x] Auto fit trim size.
 - [x] Auto end decision.
 - [x] Split page vertical.
 - [x] To executable file. (Use PyInstaller)
+- [x] Postscripts. (rename dir and zip compression)
