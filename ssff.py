@@ -3,6 +3,7 @@ import os
 import datetime
 import json
 import shutil
+import traceback
 
 import pyautogui
 import win32gui
@@ -40,160 +41,153 @@ def fill_setting(st):
     """Fill setting from user input or default."""
 
     key = 'page_num'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Number of pages, or "auto".\nDefault: auto')
-        itext = intput_with_default('> ', 'auto')
-        if not itext:
-            itext = 'auto'
-        if itext != 'auto':
-            itext = int(itext)
-        st[key] = itext
-        print(f'{key} = {st[key]}')
+        st[key] = intput_with_default('> ', 'auto')
+    if st[key] != 'auto':
+        st[key] = int(st[key])
+    print(f'{key} = {st[key]}')
 
     key = 'page_direction'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Page direction [right(r)|left(l)].\nDefault: right')
-        itext = intput_with_default('> ', 'r')
-        match itext.lower():
-            case 'r' | 'right':
-                itext = 'right'
-            case 'l' | 'left':
-                itext = 'left'
-        st[key] = itext
-        print(f'{key} = {st[key]}')
+        st[key] = intput_with_default('> ', 'r')
+    match st[key].lower():
+        case 'r' | 'right':
+            st[key] = 'right'
+        case 'l' | 'left':
+            st[key] = 'left'
+    print(f'{key} = {st[key]}')
 
     key = 'wait_before_start_ms'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Wait before start [ms].\nDefault: 5000')
         st[key] = int(intput_with_default('> ', '5000'))
-        print(f'{key} = {st[key]}')
+    print(f'{key} = {st[key]}')
 
     key = 'interval_ms'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Interval [ms].\nDefault: 1000')
         st[key] = int(intput_with_default('> ', '1000'))
-        print(f'{key} = {st[key]}')
+    print(f'{key} = {st[key]}')
 
     key = 'output_dir_prefix'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Output temporary directory prefix.\nDefault: output_')
         st[key] = intput_with_default('> ', 'output_')
-        print(f'{key} = {st[key]}')
+    print(f'{key} = {st[key]}')
 
     key = 'fname_prefix'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('File name prefix.\nDefault: page_')
         st[key] = intput_with_default(' > ', 'page_')
-        print(f'{key} = {st[key]}')
+    print(f'{key} = {st[key]}')
 
     key = 'ss_left'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Press enter key after move the mouse cursor LEFT of the screenshot area.')
         print('Alternatively, enter "max" to use the maximum size of the display.')
-        itext = input('> ')
-        if itext.lower() == 'max':
-            st[key] = 0
-        else:
-            st[key] = pyautogui.position()[0]
-        print(f'{key} = {st[key]}')
+        st[key] = input('> ')
+    if not st[key]:
+        st[key] = pyautogui.position()[0]
+    elif st[key].lower() == 'max':
+        st[key] = 0
+    print(f'{key} = {st[key]}')
 
     key = 'ss_right'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Press enter key after move the mouse cursor RIGHT of the screenshot area.')
         print('Alternatively, enter "max" to use the maximum size of the display.')
-        itext = input('> ')
-        if itext.lower() == 'max':
-            st[key] = pyautogui.size()[0]
-        else:
-            st[key] = pyautogui.position()[0]
-        print(f'{key} = {st[key]}')
+        st[key] = input('> ')
+    if not st[key]:
+        st[key] = pyautogui.position()[0]
+    elif st[key].lower() == 'max':
+        st[key] = pyautogui.size()[0]
+    print(f'{key} = {st[key]}')
 
     key = 'ss_top'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Press enter key after move the mouse cursor TOP of the screenshot area.')
         print('Alternatively, enter "max" to use the maximum size of the display.')
-        itext = input('> ')
-        if itext.lower() == 'max':
-            st[key] = 0
-        else:
-            st[key] = pyautogui.position()[1]
-        print(f'{key} = {st[key]}')
+        st[key] = input('> ')
+    if not st[key]:
+        st[key] = pyautogui.position()[1]
+    elif st[key].lower() == 'max':
+        st[key] = 0
+    print(f'{key} = {st[key]}')
 
     key = 'ss_bottom'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Press enter key after move the mouse cursor BOTTOM of the screenshot area.')
         print('Alternatively, enter "max" to use the maximum size of the display.')
-        itext = input('> ')
-        if itext.lower() == 'max':
-            st[key] = pyautogui.size()[1]
-        else:
-            st[key] = pyautogui.position()[1]
-        print(f'{key} = {st[key]}')
+        st[key] = input('> ')
+    if not st[key]:
+        st[key] = pyautogui.position()[1]
+    elif st[key].lower() == 'max':
+        st[key] = pyautogui.size()[1]
+    print(f'{key} = {st[key]}')
 
     key = 'trim'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Trim position [none(n)|fit(f)|fit-onetime(o)].\nDefault: none')
-        itext = intput_with_default('> ', 'none')
-        match itext.lower():
-            case 'f' | 'fit':
-                itext = 'fit'
-            case 'o' | 'fit-onetime':
-                itext = 'fit-onetime'
-            case _:
-                itext = 'none'
-        st[key] = itext
-        print(f'{key} = {st[key]}')
+        st[key] = intput_with_default('> ', 'none')
+    match st[key].lower():
+        case 'f' | 'fit':
+            st[key] = 'fit'
+        case 'o' | 'fit-onetime':
+            st[key] = 'fit-onetime'
+        case _:
+            st[key] = 'none'
+    print(f'{key} = {st[key]}')
 
     key = 'vsplit'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Split image vertical, if width > height [yes(y)|no(n)].\nDefault: no')
-        itext = intput_with_default('> ', 'no')
-        match itext.lower():
-            case 'y' | 'yes':
-                itext = 'yes'
-            case _:
-                itext = 'no'
-        st[key] = itext
-        print(f'{key} = {st[key]}')
+    itext = intput_with_default('> ', 'no')
+    match st[key].lower():
+        case 'y' | 'yes':
+            st[key] = 'yes'
+        case _:
+            st[key] = 'no'
+    print(f'{key} = {st[key]}')
 
     key = 'target_window'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Target window title (allow substring).')
         st[key] = intput_with_default('> ', None)
-        print(f'{key} = {st[key]}')
+    print(f'{key} = {st[key]}')
 
     key = 'dir_name'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Rename output directory after all processing. If not set, not rename.')
         st[key] = intput_with_default('> ', None)
-        print(f'{key} = {st[key]}')
+    print(f'{key} = {st[key]}')
 
     key = 'to_zip'
+    print(f'\n[{key}]')
     if key not in st:
-        print(f'\n[{key}]')
         print('Zip compress output directory after all processing. [yes(y)|no(n)].\nDefault: no')
-        itext = intput_with_default('> ', 'no')
-        match itext.lower():
-            case 'y' | 'yes':
-                itext = 'yes'
-            case _:
-                itext = 'no'
-        st[key] = itext
-        print(f'{key} = {st[key]}')
+        st[key] = intput_with_default('> ', 'no')
+    match st[key].lower():
+        case 'y' | 'yes':
+            st[key] = 'yes'
+        case _:
+            st[key] = 'no'
+    print(f'{key} = {st[key]}')
 
     return st
 
@@ -367,4 +361,9 @@ def foreground_window(title):
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception:
+        traceback.print_exc()
+        input()
+
