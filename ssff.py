@@ -97,8 +97,10 @@ def fill_setting(st):
         st[key] = input('> ')
     if not st[key]:
         st[key] = pyautogui.position()[0]
-    elif st[key].lower() == 'max':
+    elif str(st[key]).lower() == 'max':
         st[key] = 0
+    else:
+        st[key] = int(st[key])
     print(f'{key} = {st[key]}')
 
     key = 'ss_right'
@@ -109,8 +111,10 @@ def fill_setting(st):
         st[key] = input('> ')
     if not st[key]:
         st[key] = pyautogui.position()[0]
-    elif st[key].lower() == 'max':
+    elif str(st[key]).lower() == 'max':
         st[key] = pyautogui.size()[0]
+    else:
+        st[key] = int(st[key])
     print(f'{key} = {st[key]}')
 
     key = 'ss_top'
@@ -121,8 +125,10 @@ def fill_setting(st):
         st[key] = input('> ')
     if not st[key]:
         st[key] = pyautogui.position()[1]
-    elif st[key].lower() == 'max':
+    elif str(st[key]).lower() == 'max':
         st[key] = 0
+    else:
+        st[key] = int(st[key])
     print(f'{key} = {st[key]}')
 
     key = 'ss_bottom'
@@ -133,8 +139,10 @@ def fill_setting(st):
         st[key] = input('> ')
     if not st[key]:
         st[key] = pyautogui.position()[1]
-    elif st[key].lower() == 'max':
+    elif str(st[key]).lower() == 'max':
         st[key] = pyautogui.size()[1]
+    else:
+        st[key] = int(st[key])
     print(f'{key} = {st[key]}')
 
     key = 'trim'
