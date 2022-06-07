@@ -298,8 +298,8 @@ def screenshot(st):
     if dir_name:
         try:
             os.rename(output_dir, dir_name)
-            output_dir = dir_name
             print(f'Rename output directory: {output_dir} -> {dir_name}')
+            output_dir = dir_name
         except Exception:
             print(f'Failed rename output directory: {output_dir} -> {dir_name}')
 

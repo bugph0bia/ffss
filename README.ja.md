@@ -8,7 +8,7 @@ ssff
 [English page](./README.md)  
 
 ## 概要
-スクリーンショットとページ送りを行う Windows 専用のツール。Windows 専用。  
+スクリーンショットとページ送りを行う Windows 専用のツール。  
 例 ) PDF, EPUB などのファイルを画像ファイルに変換する。  
 
 ## 要件
