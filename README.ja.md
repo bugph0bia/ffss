@@ -1,7 +1,7 @@
 ssff
 ====
 
-![Software Version](http://img.shields.io/badge/Version-v0.2.0-green.svg?style=flat)
+![Software Version](http://img.shields.io/badge/Version-v0.3.0-green.svg?style=flat)
 ![Python Version](http://img.shields.io/badge/Python-3.10-blue.svg?style=flat)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
@@ -10,6 +10,13 @@ ssff
 ## 概要
 スクリーンショットとページ送りを行う Windows 専用のツール。  
 例 ) PDF, EPUB などのファイルを画像ファイルに変換する。  
+
+### 主な機能
+- スクリーンショットとページ送りの繰り返し実行
+- (オプション) トリミングサイズの自動認識
+- (オプション) 自動終了
+- (オプション) 画像の垂直分割
+- (オプション) Zip 圧縮
 
 ## 要件
 - Python3.10
@@ -116,10 +123,3 @@ UTF-8 エンコードの JSON 形式のファイルとする。
 全ての処理が終了した後でディレクトリを zip 圧縮する。  
 
 "yes" または "no" で実行可否を指定する。  
-
-## TODO
-- [x] トリミングサイズの自動化。
-- [x] 終了条件の自動化。
-- [x] ページの垂直分割。
-- [x] exe ファイル化。(PyInstaller を使用)
-- [x] 後処理。(ディレクトリ名変更と ZIP 圧縮)
