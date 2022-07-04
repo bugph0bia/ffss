@@ -25,7 +25,7 @@ def main():
     # run screenshot
     screenshot(st)
 
-    print('All completed.')
+    print('All completed. Please any key to finish...')
     input()
 
 
@@ -304,6 +304,7 @@ def screenshot(st):
         page += 1
         
     print('Screenshot process completed.')
+    print('')
 
     # rename output dir
     if dir_name:
@@ -313,6 +314,7 @@ def screenshot(st):
             output_dir = dir_name
         except Exception:
             print(f'Failed rename output directory: {output_dir} -> {dir_name}')
+        print('')
 
     # zip compress output dir
     if to_zip:
@@ -325,6 +327,7 @@ def screenshot(st):
             print('Delete temporary directory.')
         except Exception:
             print('Failed zip compress or delete directory.')
+        print('')
 
 
 def save_image(img, output_dir, fname_prefix, fno):
