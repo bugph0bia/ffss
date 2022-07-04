@@ -25,7 +25,7 @@ def main():
     # run screenshot
     screenshot(st)
 
-    print('finished.')
+    print('All completed.')
     input()
 
 
@@ -293,6 +293,8 @@ def screenshot(st):
         # next
         ss_old = ss
         page += 1
+        
+    print('Screenshot process completed.')
 
     # rename output dir
     if dir_name:
