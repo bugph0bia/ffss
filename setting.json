@@ -3,6 +3,7 @@
     "interval_ms": 750,
     "output_dir_prefix": "output_",
     "fname_prefix": "page_",
+    "start_file_no": 1,
     "ss_left": 400,
     "ss_right": 1520,
     "ss_top": "max",
