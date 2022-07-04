@@ -11,7 +11,7 @@ import ctypes
 from PIL import Image, ImageChops
 
 
-VERSION = 'v0.3.0'
+VERSION = 'v0.4.0'
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
     # run screenshot
     screenshot(st)
 
-    print('finished.')
+    print('All completed. Please any key to finish...')
     input()
 
 
@@ -39,6 +39,14 @@ def load_setting():
 
 def fill_setting(st):
     """Fill setting from user input or default."""
+
+    key = 'start_file_no'
+    print(f'\n[{key}]')
+    if key not in st:
+        print('Start file number.\nDefault: 1')
+        st[key] = intput_with_default('> ', '1')
+    st[key] = max(int(st[key]), 1)
+    print(f'{key} = {st[key]}')
 
     key = 'page_num'
     print(f'\n[{key}]')
@@ -217,6 +225,7 @@ def screenshot(st):
     wait_before_start = st['wait_before_start_ms'] / 1000
     output_dir = st['output_dir_prefix'] + str(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
     fname_prefix = st['fname_prefix']
+    start_file_no = st['start_file_no']
     page_num = st['page_num']
     page_direction = st['page_direction']
     x1 = st['ss_left']
@@ -243,7 +252,7 @@ def screenshot(st):
     trim_area = None
     ss_old = None
     page = 1
-    fno = 1
+    fno = start_file_no
 
     # main process
     while True:
@@ -293,6 +302,9 @@ def screenshot(st):
         # next
         ss_old = ss
         page += 1
+        
+    print('Screenshot process completed.')
+    print('')
 
     # rename output dir
     if dir_name:
@@ -302,6 +314,7 @@ def screenshot(st):
             output_dir = dir_name
         except Exception:
             print(f'Failed rename output directory: {output_dir} -> {dir_name}')
+        print('')
 
     # zip compress output dir
     if to_zip:
@@ -314,6 +327,7 @@ def screenshot(st):
             print('Delete temporary directory.')
         except Exception:
             print('Failed zip compress or delete directory.')
+        print('')
 
 
 def save_image(img, output_dir, fname_prefix, fno):
